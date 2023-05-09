@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .border-red {border: red 1px solid}
+    .border-blue {border: blue 1px solid}
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- {{ }} 2個大括號叫模板語法，裡面放data名稱就可以顯示內容 -->
+    <h1>{{ text }}</h1>
+
+    <!-- 把標籤裡面的東西變成data的字 -->
+    <h1 v-text="text"></h1>
+    <!-- 文字資料是html的話 {{ }} 會把html當文字輸出 -->
+    <p>{{ html }}</p>
+    <!-- 把標籤裡面的html變成data裡面的字 -->
+    <p v-html="html"></p>
+    <p v-if="num === 1">AAA</p>
+    <p v-else-if="num === 2">bbb</p>
+    <p v-else="num === 3">ccc</p>
+    <p v-show="num === 1">AAA</p>
+    <ul>
+      <li v-for="fruit in fruits">{{ fruit }}</li>
+    </ul>
+    <ul>
+      <li v-for="(fruit , i) in fruits">{{ i + ' . ' + fruit }}</li>
+    </ul>
+    <a v-bind:href="link">google</a>
+    <a :href="link">google</a>
+    <img :src="img" alt="" width="100">
+    <p :style="{color:'#fff', backgroundColor: 'black', width:'200px'}">jrgjegiejoirjgre</p>
+    <p :style="textStyle">dwdwdwdwdww</p>
+    <p :class="textClass">cddcdc</p>
+    <p :class="{'border-blue':true, 'border-red': false}">cddcdc</p>
+    <input type="text" v-model="form.text">
+    <p>{{ form.text }}</p>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script>
+    new Vue ({
+      // Vue 對應的對應到的div
+      el: '#app',
+
+      // Vue 所有資料要盎在data裡面,有2種寫法
+      // 寫法 1，僅限於現在可以用
+
+      // data: {
+      //   text:'aaa',
+      // },
+
+      // 寫法2通用的，要寫成function return 出去
+      // Vue 元件有什麼資料
+      data () {
+        return {
+          text:'abc',
+          html:' <a href="https://google.com">google</a>',
+          num: 1,
+          fruits:['西瓜','香蕉','哈密瓜'],
+          link:'https://google.com',
+          img:'https://rogeraabbccdd.github.io/F2E-book/images/ch22/mvvm.png',
+          textStyle: {
+            color:'#fff',
+            backgroundColor: 'black',
+            width:'200px'
+          },
+          textClass:{
+          'border-red':true,
+          'border-blue':false
+          },
+          form:{
+            text:''
+          }
+          
+        }
+      }
+    })
+  </script>
+</body>
+</html>
