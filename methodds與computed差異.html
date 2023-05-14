@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .border-red {border: red 1px solid}
+    .border-blue {border: blue 1px solid}
+  </style>
+</head>
+<body>
+  <!-- 只要是v-開頭的屬性(v-text, v-html) 裡面的值都是js的範圍 -->
+  <div id="app">
+    <!-- mothods -->
+    <template>
+      <div>
+        <p>The square of 5 is {{ square(5) }}</p>
+      </div>
+    </template>
+    <!-- comouted -->
+    <template>
+      <div>
+        <p>The square of 5 is {{ squaredNumber }}</p>
+      </div>
+    </template>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script>
+    new Vue ({
+      el: '#app',
+      data () {
+        return {
+          }
+          
+      },
+      // Vue 元件有什麼 function
+      methods: {
+        square(number) {
+          return number * number;
+        }
+      },
+      computed: {
+        squaredNumber() {
+          return this.number * this.number;
+        }
+
+      }
+    })
+  </script>
+</body>
+</html>

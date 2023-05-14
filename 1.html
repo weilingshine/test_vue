@@ -11,36 +11,83 @@
   </style>
 </head>
 <body>
+  <!-- 只要是v-開頭的屬性(v-text, v-html) 裡面的值都是js的範圍 -->
   <div id="app">
     <!-- {{ }} 2個大括號叫模板語法，裡面放data名稱就可以顯示內容 -->
+    <!-- {{ }}模板符號裡面可以做簡易的文字連接或三元運算 -->
     <h1>{{ text }}</h1>
-
     <!-- 把標籤裡面的東西變成data的字 -->
     <h1 v-text="text"></h1>
     <!-- 文字資料是html的話 {{ }} 會把html當文字輸出 -->
     <p>{{ html }}</p>
     <!-- 把標籤裡面的html變成data裡面的字 -->
     <p v-html="html"></p>
+    <!-- 判斷式，符合才出現DOM-->
     <p v-if="num === 1">AAA</p>
     <p v-else-if="num === 2">bbb</p>
     <p v-else="num === 3">ccc</p>
+    <!-- 判斷式，符合才出現DOM．不符合disolay:none-->
     <p v-show="num === 1">AAA</p>
+    <!-- 迴圈 -->
+    <!-- v-for ="value in 陣列" --> 
     <ul>
       <li v-for="fruit in fruits">{{ fruit }}</li>
     </ul>
+    <!-- v-for ="(value , index) in 陣列" -->
     <ul>
-      <li v-for="(fruit , i) in fruits">{{ i + ' . ' + fruit }}</li>
+      <li v-for="(fruit , i) in fruits" >{{ i + ' . ' + fruit }}</li>
     </ul>
+    <!-- 屬性綁定 -->
+    <!-- 完整寫法  v-bind:href-->
+    <!-- 除了value style class寫法不一樣，其他都是這樣的寫法 -->
+    <!-- 把 href 這個屬性綁定為 data -->
     <a v-bind:href="link">google</a>
+    <!-- 簡寫 :href -->
     <a :href="link">google</a>
+    <!-- 圖片 v-bind -->
     <img :src="img" alt="" width="100">
+    <!-- :style 用物件設定 :style = "{樣式：“值”}"寫死在html -->
     <p :style="{color:'#fff', backgroundColor: 'black', width:'200px'}">jrgjegiejoirjgre</p>
+    <!-- style 寫在data -->
     <p :style="textStyle">dwdwdwdwdww</p>
+    <!-- :class ="{class:布林值}" -->
+    <!-- class名稱有 - 連接符號，需要把 class用引號匡起來 -->
+    <p :class="{'border-red':true, 'border-blue': false}">cddcdc</p>
+    <!-- 布林值設在data -->
     <p :class="textClass">cddcdc</p>
-    <p :class="{'border-blue':true, 'border-red': false}">cddcdc</p>
+    <!-- 表單 v-model 代表輸入的值， :value 代表欄位的值-->
+    <!-- 綁定使用者輸入的字，用v-modal -->
     <input type="text" v-model="form.text">
     <p>{{ form.text }}</p>
+    <!-- select -->
+    <!-- v-model 使用者選得值 -->
+    <!-- v-bind:value 表單欄位的值 -->
+    <select v-model="form.select">
+      <option v-for="fruit in fruits"> {{ fruit }} </option>
+    </select>
+    <!-- input radio 跟 input checkout box 一樣，用v-model 區分群組 -->
+    <input type="radio" v-model="form.radio" v-for="fruit in fruits" :value="fruit">
 
+    <!-- 事件 -->
+    <input type="button" value="點" v-on:click="clickBtn">
+    <input type="button" value="點" @click="clickBtn2">
+    <input type="button" value="點" @click="clickBtn3('hi')">
+    <input type="button" value="點" @click="clickBtn4('hi', $event)">
+    <!-- 阻止事件 -->
+    <!-- .prevent = .preventDefault() 阻止事件默認行為-->
+    <!-- .stop = .stopPropagation 阻止事件傳播（事件冒泡）-->
+    <a href="https://www.google.com" @click.prevent = "clickLine" >google</a>
+    <!-- keydown -->
+    <!-- .enter 監測 enter 按鍵動作 -->
+    <input type="text" @keydown.enter = "inputEnter" v-model="form.text">
+    <hr>
+    <input type="text" v-model="form.lastName" placeholder="你的姓氏">
+    <input type="text" v-model="form.firstName" placeholder="你的名字">
+    <p>你的姓氏為 {{ form.lastName}} / 你的名字為 {{ form.firstName}} / 你的全名為 {{ form.lastName + form.firstName}}</p>
+    <p>你的姓氏為 {{ form.lastName}} / 你的名字為 {{ form.firstName}} / 你的全名為 {{ fullName }}</p>
+    <input type="text" v-model="text">
+    <!-- mounted -->
+    <h1 ref="myTilte" id="myTitle">123456</h1>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <script>
@@ -71,14 +118,87 @@
             width:'200px'
           },
           textClass:{
-          'border-red':true,
-          'border-blue':false
+          'border-red':false,
+          'border-blue':true
           },
           form:{
-            text:''
+            text:'',
+            select:'',
+            radio:'',
+            firstName:'',
+            lastName:'',
           }
           
         }
+      },
+      // Vue 元件有什麼 function
+      methods: {
+        clickBtn(){
+          alert('點')
+        },
+        clickBtn2(event){
+          console.log(event)
+          alert('點')
+        },
+        clickBtn3(text){
+          alert(text)
+        },
+        clickBtn4(text, event){
+          console.log(event)
+          alert(text)
+        },
+        clickLine(){
+          alert('不會跳頁')
+        },
+        inputEnter(){
+          // 在 methods 抓 data 資料時要加 this
+          // 在 methods 呼叫另一個 methods 也要加 This
+          alert(this.form.text)
+        },
+      },
+      // computed 計算數性
+      // 經過 function 運算的 data 印出的資料
+      // 一定要用 return 
+      // computed 的東西算是 data ，目前先寄他只能讀就好
+      // computed 的資料是唯獨的，不能修改它
+      // 運作邏輯為 只要你的funtion 用到的 data 有變動時 computed 就重新跑一次 function ，去算出目前的值是什麼
+      // computed 是 data
+      // methods 做動作， computed 平常可以使用的值
+      // **computed 經過 function 運算的 data
+      computed: {
+        fullName(){
+          return this.form.lastName + this.form.firstName
+        }
+      },
+      // 偵測 data 變更
+      // 以 data 名稱當作 function 名稱
+      // 可以偵測數值改變前跟改變後的差異
+      watch: {
+        text(newValue, oldValue){
+          console.log(newValue, oldValue)
+        },
+        //  watch 是陣列或物件的話要用 deep 
+        form: {
+          // 深層監聽 , handler 跟 deep true 都是固定的
+          // 不使用 deep 只會偵測陣列或物件變更
+          // 
+          deep: true,
+          handler(newValue){
+            console.log(newValue)
+          }
+        }
+      },
+      // 生命週期
+      // 當元件放到 Dom 時，才可以抓一些元素
+      mounted(){
+        // 用 ref 抓取元素
+        console.log(this.$refs.myTilte.innerText)
+        // 用querySelector 或 querySelectorAll 抓取元素
+        // vue 的 $el 沒有辦法用  document.getElementById 抓取元素
+        console.log(this.$el.querySelector('#myTitle').innerText)
+
+        
+
       }
     })
   </script>

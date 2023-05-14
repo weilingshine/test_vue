@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="parent" style="background: #0088cc; width: 400px; height:300px;">
+    <div id="child" style="background: #8800cc; width: 200px; height:300px;"></div>
+    
+  </div>
+  <script>
+    var parent = document.getElementById("parent");
+    var child = document.getElementById("child");
+
+    parent.addEventListener("click", function(event) {
+      console.log("Parent clicked!");
+    });
+
+    child.addEventListener("click", function(event) {
+      event.stopPropagation(); // 停止事件的传播
+      console.log("Child clicked!");
+    });
+  </script>
+</body>
+</html>
