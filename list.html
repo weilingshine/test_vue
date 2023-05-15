@@ -76,9 +76,18 @@
         borderColor() {
           return this.newitem.length === 0 ? 'black' : this.newitem.lenght <2 ? 'red':'blud'
         }
-
+      },
+      watch: {
+        items: {
+          deep: true,
+          handler(value) {
+            localStorage.setItem('list', JSON.stringify(value))
+          }
+        }
+      },
+      mounted() {
+        this.items = JSON.parse(localStorage.getItem('list')) || []
       }
-
     })
   </script>
   
