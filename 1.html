@@ -132,6 +132,7 @@
         }
       },
       // Vue 元件有什麼 function
+      //methods = 方法
       methods: {
         clickBtn(){
           alert('點')
@@ -165,6 +166,7 @@
       // computed 是 data
       // methods 做動作， computed 平常可以使用的值
       // **computed 經過 function 運算的 data
+      // computed = 計算的
       computed: {
         fullName(){
           return this.form.lastName + this.form.firstName
@@ -173,6 +175,7 @@
       // 偵測 data 變更
       // 以 data 名稱當作 function 名稱
       // 可以偵測數值改變前跟改變後的差異
+      // 稱側東西有變
       watch: {
         text(newValue, oldValue){
           console.log(newValue, oldValue)
@@ -181,7 +184,7 @@
         form: {
           // 深層監聽 , handler 跟 deep true 都是固定的
           // 不使用 deep 只會偵測陣列或物件變更
-          // 
+          // handler = 處理程序
           deep: true,
           handler(newValue){
             console.log(newValue)
@@ -190,16 +193,14 @@
       },
       // 生命週期
       // 當元件放到 Dom 時，才可以抓一些元素
+      // mounted = 安裝
       mounted(){
         // 用 ref 抓取元素
         console.log(this.$refs.myTilte.innerText)
         // 用querySelector 或 querySelectorAll 抓取元素
         // vue 的 $el 沒有辦法用  document.getElementById 抓取元素
         console.log(this.$el.querySelector('#myTitle').innerText)
-
-        
-
-      }
+      },
     })
   </script>
 </body>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 
+  # 練習
+餐廳菜單表格
+- 可以新增食物，包含名稱和價格
+- 可以刪除單個食物
+- 將資料存到 localStorage
+- 表格邊框顏色空的時候是紅色，兩個以上是藍色，五個以上是綠色
+-->
+  <div id="app">
+    <input type="text" placeholder="請輸入菜色" v-model="form.name" @keydown.enter="add">
+    <input type="text" placeholder="請輸入價格" v-model.number="form.price" @keydown.enter="add">
+    <input type="button" value="新增" @click="add">
+    
+    <table border="1" width="400" :style="{border : '5px solid ' + borderColor}">
+    <!-- <table border="1" width="400" > -->
+      <tr><td>菜色: </td><td> 價格: </td><td>刪除</td></tr>
+      <tr v-for="(food, i) in foods">
+        <td > {{food.name }} </td><td>{{ food.price }}</td><td><input type="button" value="X" @click="del(i)"></td>
+      </tr>
+    </table>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script> 
+    new Vue ({
+      el: '#app',
+      data(){
+        return {
+          form: {
+            name: '',
+            price: 0
+          },
+          foods:[],
+        }
+      },
+      methods: {
+        // add () {
+        //   this.foods.push({name: this.form.name, price: this.form.price})
+        //   this.form.name =''
+        //   this.form.price = 0
+        // },
+        add () {
+          if(this.form.name.length > 0 ) {
+            this.foods.push(this.form)
+            this.form = {
+              name:'',
+              price: 0
+            }
+          }
+        },
+        del (i) {
+          this.foods.splice(i, 1)
+        }
+      },
+      computed: {
+        borderColor() {
+          // return this.foods.length >= 2 ? 'blue' : this.foods.length >= 5 ? 'green' : 'red'
+          return this.foods.length >= 5 ? 'green' : this.foods.length >= 2 ? 'blue' : this.foods.length === 0 ?  'red' : '' 
+        }
+      },
+      watch: {
+        foods : {
+          deep: true,
+          handler (value) {
+            localStorage.setItem('foods', JSON.stringify(value))
+          } 
+        }
+      },
+      mounted() {
+        this.foods= JSON.parse(localStorage.getItem('foods'))|| []
+      }
+    })
+  </script>
+  
+</body>
+</html>
